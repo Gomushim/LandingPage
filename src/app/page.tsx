@@ -168,8 +168,8 @@ export default function Home() {
           </h2>
           <p className="text-gray-0 mt-13 text-sm font-medium">사랑꾼 서비스가 런칭되면 이메일로 알려드릴게요</p>
           <form className="mt-11 flex w-full flex-col gap-5 p-11">
-            <div>
-              <label className="mb-1 text-sm font-semibold text-gray-50" htmlFor="email">
+            <div className="flex flex-col">
+              <label className="mb-1 text-start text-sm font-semibold text-gray-50" htmlFor="email">
                 이메일
               </label>
               <Input className="mt-1 h-13 rounded-2xl bg-white" type="email" id="email" name="email" />
