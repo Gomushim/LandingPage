@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,7 +26,7 @@ export const NewsletterForm = () => {
       // Firestore에 데이터 저장
       await addDoc(collection(db, "newsletters"), {
         email,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
       });
 
       setSuccess(true);
