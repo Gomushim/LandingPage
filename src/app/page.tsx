@@ -39,7 +39,7 @@ export default function Home() {
               {[...Array(2)].map((_, i) => (
                 <div key={i} className="flex gap-5">
                   <Image
-                    src="/iPhone1.svg"
+                    src="/iPhone3.webp"
                     alt="서비스 이미지1"
                     width={210}
                     height={425}
@@ -47,7 +47,7 @@ export default function Home() {
                     priority
                   />
                   <Image
-                    src="/iPhone2.svg"
+                    src="/iPhone2.webp"
                     alt="서비스 이미지2"
                     width={210}
                     height={425}
@@ -55,7 +55,7 @@ export default function Home() {
                     priority
                   />
                   <Image
-                    src="/iPhone3.svg"
+                    src="/iPhone1.webp"
                     alt="서비스 이미지3"
                     width={210}
                     height={425}
