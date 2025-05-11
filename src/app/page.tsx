@@ -27,7 +27,7 @@ export default function Home() {
 
         <section className="flex w-full flex-col items-center gap-17 bg-gray-50 py-15 text-center">
           <h2 className="text-2xl font-bold whitespace-pre-line text-gray-900">
-            {"힘들었건 곰신 연애\n이제 서로의 감정을\n더욱 깊게 이어가세요."}
+            {"힘들었던 곰신 연애\n이제 서로의 감정을\n더욱 깊게 이어가세요."}
           </h2>
           <h2 className="text-2xl font-bold whitespace-pre-line text-gray-900">
             {"보고 싶고, 기다리고,\n걱정했던 시간들,\n이제 사랑꾼이\n둘 사이를 더 단단히 연결할 거예요."}
