@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import Link from "next/link";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -85,79 +84,68 @@ export default function Home() {
             <br />둘 사이를 더 단단히 연결할 거예요.
           </h2>
         </section>
-        <section className="mt-25">
-          <Carousel className="w-full max-w-xs">
-            <CarouselContent>
-              <CarouselItem>
-                <div className="flex flex-col items-start px-6">
-                  <div className="rounded-2xl bg-red-50 p-1 px-3 text-xs font-bold text-red-500">공유 캘린더</div>
-                  <h3 className="mt-3 mb-12 text-2xl font-bold text-gray-900">
-                    피로도 설정 가능한 공유 캘린더로
-                    <br />
-                    상대의 일정과 감정을 한 눈에
-                  </h3>
-                  <Image
-                    src="/calendarIphone.svg"
-                    alt="캘린더 휴대폰"
-                    width={208}
-                    height={425}
-                    className="h-[425px] w-[208px]"
-                  />
-                  <p className="mt-12 text-sm font-semibold text-gray-900">
-                    공유 캘린더로 서로의 일정을 등록하고
-                    <br />
-                    상대의 일정과 피로도를 더욱 상세히 알 수 있어요
-                  </p>
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="flex flex-col items-start px-7.5">
-                  <div className="rounded-2xl bg-red-50 p-1 px-3 text-xs font-bold text-red-500">내 감정 공유</div>
-                  <h3 className="mt-3 mb-12 text-2xl font-bold text-gray-900">
-                    메진저로 전하기 못한 오늘의 나,
-                    <br />
-                    이제 감정과 상태메시지로 전해요
-                  </h3>
-                  <Image
-                    src="/statusIphone.svg"
-                    alt="캘린더 휴대폰"
-                    width={208}
-                    height={425}
-                    className="h-[425px] w-[208px]"
-                  />
-                  <p className="mt-12 text-sm font-semibold text-gray-900">
-                    내 감정 상태에 따른 이모지와 글,
-                    <br />
-                    이제 서로를 더 깊게 알아가요.
-                  </p>
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="flex flex-col items-start px-7.5">
-                  <div className="rounded-2xl bg-red-50 p-1 px-3 text-xs font-bold text-red-500">
-                    일정에 작성하는 편지
-                  </div>
-                  <h3 className="mt-3 mb-12 text-2xl font-bold text-gray-900">
-                    고된 훈련, 행군...
-                    <br />
-                    걱정하는 마음을 추억과 함께 전해요.
-                  </h3>
-                  <Image
-                    src="/detailIphone.svg"
-                    alt="캘린더 휴대폰"
-                    width={208}
-                    height={425}
-                    className="h-[425px] w-[208px]"
-                  />
-                  <p className="mt-12 text-sm font-semibold text-gray-900">
-                    일정에 직접 남길 수 있는 편지로
-                    <br />
-                    연인과 더 가깝게 연결될 수 있어요.
-                  </p>
-                </div>
-              </CarouselItem>
-            </CarouselContent>
-          </Carousel>
+        <section className="my-25 flex flex-col items-center gap-25">
+          <div className="flex flex-col items-center px-6 text-center">
+            <div className="rounded-2xl bg-red-50 p-1 px-3 text-xs font-bold text-red-500">공유 캘린더</div>
+            <h3 className="mt-3 mb-12 text-2xl font-bold text-gray-900">
+              피로도 설정 가능한 공유 캘린더로
+              <br />
+              상대의 일정과 감정을 한 눈에
+            </h3>
+            <Image
+              src="/calendarIphone.webp"
+              alt="캘린더 휴대폰"
+              width={208}
+              height={425}
+              className="h-[425px] w-[208px]"
+            />
+            <p className="mt-12 text-sm font-semibold text-gray-900">
+              공유 캘린더로 서로의 일정을 등록하고
+              <br />
+              상대의 일정과 피로도를 더욱 상세히 알 수 있어요
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center px-7.5 text-center">
+            <div className="rounded-2xl bg-red-50 p-1 px-3 text-xs font-bold text-red-500">내 감정 공유</div>
+            <h3 className="mt-3 mb-12 text-2xl font-bold text-gray-900">
+              메진저로 전하기 못한 오늘의 나,
+              <br />
+              이제 감정과 상태메시지로 전해요
+            </h3>
+            <Image
+              src="/statusIphone.webp"
+              alt="캘린더 휴대폰"
+              width={208}
+              height={425}
+              className="h-[425px] w-[208px]"
+            />
+            <p className="mt-12 text-sm font-semibold text-gray-900">
+              내 감정 상태에 따른 이모지와 글,
+              <br />
+              이제 서로를 더 깊게 알아가요.
+            </p>
+          </div>
+          <div className="flex flex-col items-center px-7.5 text-center">
+            <div className="rounded-2xl bg-red-50 p-1 px-3 text-xs font-bold text-red-500">일정에 작성하는 편지</div>
+            <h3 className="mt-3 mb-12 text-2xl font-bold text-gray-900">
+              고된 훈련, 행군...
+              <br />
+              걱정하는 마음을 추억과 함께 전해요.
+            </h3>
+            <Image
+              src="/detailIphone.webp"
+              alt="캘린더 휴대폰"
+              width={208}
+              height={425}
+              className="h-[425px] w-[208px]"
+            />
+            <p className="mt-12 text-sm font-semibold text-gray-900">
+              일정에 직접 남길 수 있는 편지로
+              <br />
+              연인과 더 가깝게 연결될 수 있어요.
+            </p>
+          </div>
         </section>
         <section className="flex flex-col items-center bg-[linear-gradient(180deg,_#2A2C2F_0%,_#9FA6B0_100%)] pt-[116px] pb-[200px] text-center">
           <Image src="/bottomLogo.svg" alt="로고" width={48} height={48} className="h-12 w-12" />
