@@ -15,7 +15,7 @@ export const FEATURE_SECTIONS: FeatureSection[] = [
   },
   {
     tag: "내 감정 공유",
-    title: "메진저로 전하기 못한 오늘의 나,\n이제 감정과 상태메시지로 전해요",
+    title: "메신저로 전하지 못한 오늘의 나,\n이제 감정과 상태메시지로 전해요",
     description: "내 감정 상태에 따른 이모지와 글,\n이제 서로를 더 깊게 알아가요.",
     image: { src: "/statusIphone.webp", alt: "상태 휴대폰" },
   },

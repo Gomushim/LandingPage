@@ -6,7 +6,7 @@ export const Header = () => (
     <Image src="/logo.svg" alt="로고" width={70} height={21} />
     <div className="flex items-center gap-2.5">
       <Link
-        href="https://frontend-sarang.vercel.app/"
+        href="#"
         target="_blank"
         className="h-9 w-25 cursor-pointer rounded-2xl bg-red-400 px-4 py-2 text-sm font-semibold text-gray-50">
         앱 다운로드
