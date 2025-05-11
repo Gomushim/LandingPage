@@ -16,7 +16,7 @@ export default function Home() {
           <h1 className="text-center text-4xl font-bold text-gray-900">
             더 깊이 연결되는 감정
             <br />
-            곰신 커플을 위한{" "}
+            곰신 커플을 위한
             <span className="bg-gradient-to-r from-[#FF42B0] to-[#FFC4E7] bg-clip-text text-transparent">
               공유 캘린더
             </span>

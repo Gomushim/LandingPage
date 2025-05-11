@@ -5,8 +5,5 @@ export const Footer = () => (
     <Link href="#" className="text-sm font-semibold text-gray-100 underline">
       Instagram
     </Link>
-    <Link href="#" className="text-sm font-semibold text-gray-100 underline">
-      Email
-    </Link>
   </footer>
 );
