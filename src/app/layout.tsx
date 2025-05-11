@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     siteName: "사랑꾼",
     images: [
       {
-        url: "/og-image.png", // OG 이미지 경로 (public 디렉토리 기준)
+        url: "https://i.ibb.co/LhtzcFkY/Frame-2087327861-1.png",
         width: 1200,
         height: 630,
         alt: "사랑꾼 서비스 미리보기 이미지",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "사랑꾼 – 곰신 커플을 위한 감정 공유 캘린더",
     description: "떨어져 있어도 감정은 함께. 일정과 감정을 함께 기록하며 더 가까워지세요.",
-    images: ["/og-image.png"],
+    images: ["https://i.ibb.co/LhtzcFkY/Frame-2087327861-1.png"],
   },
 };
 
