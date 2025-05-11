@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Checkbox } from "@radix-ui/react-checkbox";
+
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import { Checkbox } from "@/components/ui/checkbox";
 export default function Home() {
   return (
     <div className="flex items-start justify-center bg-gray-200">
@@ -163,7 +163,10 @@ export default function Home() {
               <Input className="mt-1 h-13 rounded-2xl bg-white" type="email" id="email" name="email" />
             </div>
             <div className="flex items-center gap-2">
-              <Checkbox id="check" className="h-5 w-5 border-gray-50 bg-white" />
+              <Checkbox
+                id="check"
+                className="h-5 w-5 border-gray-50 bg-white text-green-500 data-[state=checked]:border-green-500"
+              />
               <label className="text-sm font-semibold text-gray-50" htmlFor="check">
                 개인정보 이용 동의
               </label>
