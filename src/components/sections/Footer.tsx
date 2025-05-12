@@ -14,7 +14,11 @@ export const Footer = () => {
 
   return (
     <footer className="flex items-center justify-center gap-10 bg-gray-900 py-10">
-      <Link href="#" onClick={handleInstagramClick} className="text-sm font-semibold text-gray-100 underline">
+      <Link
+        href="https://www.instagram.com/sarangkkun_official/"
+        target="_blank"
+        onClick={handleInstagramClick}
+        className="text-sm font-semibold text-gray-100 underline">
         Instagram
       </Link>
     </footer>
