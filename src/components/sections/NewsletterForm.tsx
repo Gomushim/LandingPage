@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { db } from "@/firebase/index";
+import { db } from "@/firebase";
+import { event } from "@/lib/gtag";
 
 export const NewsletterForm = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +27,14 @@ export const NewsletterForm = () => {
       // Firestore에 데이터 저장
       await addDoc(collection(db, "newsletters"), {
         email,
-        createdAt: serverTimestamp(),
+        createdAt: new Date(),
+      });
+
+      // GA4 이벤트 전송
+      event({
+        action: "submit",
+        category: "newsletter",
+        label: "email_registration",
       });
 
       setSuccess(true);

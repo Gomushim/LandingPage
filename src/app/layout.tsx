@@ -1,10 +1,14 @@
-import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
+import { Metadata } from "next";
+import { GA_TRACKING_ID } from "@/lib/gtag";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "사랑꾼 – 곰신 커플을 위한 감정 공유 캘린더",
-  description:
-    "떨어져 있어도 함께하는 마음. 일정과 감정을 공유하며 더 깊게 연결되는 우리. 지금 '사랑꾼'에서 감정을 나누세요.",
+  title: "사랑꾼 - 곰신 커플을 위한 공유 캘린더",
+  description: "더 깊이 연결되는 감정, 곰신 커플을 위한 공유 캘린더",
   openGraph: {
     title: "사랑꾼 – 곰신 커플을 위한 감정 공유 캘린더",
     description:
@@ -29,18 +33,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <head>
+        <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_TRACKING_ID}');
+            `,
+          }}
+        />
         <meta name="google-site-verification" content="FSXKlC8L2fC87G2HeDdxtnQyzDlOM4C3Y1eYoq3mzVA" />
         <meta name="naver-site-verification" content="159f6b48c5a57e08991c3f3d01c90a33db3ccba0" />
       </head>
-      <body>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
