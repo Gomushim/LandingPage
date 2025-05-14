@@ -61,7 +61,7 @@ export const theme = {
       "gray-1000": "#2C2E31",
     },
     fontFamily: {
-      pretendard: ["Pretendard", "sans-serif"],
+      pretendard: ["var(--font-pretendard)"],
     },
     fontSize: {
       "4xl": ["1.75rem", { lineHeight: "150%", letterSpacing: "-0.02em" }], // Heading

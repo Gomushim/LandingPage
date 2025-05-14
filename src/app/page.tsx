@@ -9,7 +9,7 @@ import { ArrowButton } from "@/components/ArrowButton";
 
 export default function Home() {
   return (
-    <div className="flex items-start justify-center bg-gray-200">
+    <div className="font-pretendard flex items-start justify-center bg-gray-200">
       <main className="pc:max-w-[365px] min-w-[365px] bg-white">
         <Header />
 

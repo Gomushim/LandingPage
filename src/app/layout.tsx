@@ -1,10 +1,14 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { Metadata } from "next";
+import localFont from "next/font/local";
 import { GA_TRACKING_ID } from "@/lib/gtag";
 
-const inter = Inter({ subsets: ["latin"] });
+const pretendard = localFont({
+  src: "../static/fonts/PretendardVariable.woff2",
+  display: "swap",
+  variable: "--font-pretendard",
+});
 
 export const metadata: Metadata = {
   title: "사랑꾼 - 곰신 커플을 위한 공유 캘린더",
@@ -53,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="google-site-verification" content="FSXKlC8L2fC87G2HeDdxtnQyzDlOM4C3Y1eYoq3mzVA" />
         <meta name="naver-site-verification" content="159f6b48c5a57e08991c3f3d01c90a33db3ccba0" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={`${pretendard.className}`}>{children}</body>
     </html>
   );
 }
