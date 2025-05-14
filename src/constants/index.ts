@@ -21,8 +21,14 @@ export const FEATURE_SECTIONS: FeatureSection[] = [
   },
   {
     tag: "일정에 작성하는 편지",
-    title: "고된 훈련, 행군...\n걱정하는 마음을 추억과 함께 전해요.",
+    title: "고된 훈련, 행군...\n걱정하는 마음을 추억과 함께 전해요",
     description: "일정에 직접 남길 수 있는 편지로\n연인과 더 가깝게 연결될 수 있어요.",
     image: { src: "/detailIphone.webp", alt: "상세 휴대폰" },
+  },
+  {
+    tag: "무뎌지지 않는 감정",
+    title: "서로에 대한 감정이 무뎌지지 않도록\n알림을 보내드려요",
+    description: "바쁜 일상 중에서도\n서로를 생각하는 마음을 지속가능하게 해줄게요",
+    image: { src: "/pushAlram.webp", alt: "알람 표시 이미지" },
   },
 ];

@@ -19,7 +19,7 @@ export const Footer = () => {
         target="_blank"
         onClick={handleInstagramClick}
         className="text-sm font-semibold text-gray-100 underline">
-        Instagram
+        @sarangkkun_officia
       </Link>
     </footer>
   );

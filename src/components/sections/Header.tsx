@@ -7,7 +7,7 @@ export const Header = () => (
     <div className="flex items-center gap-2.5">
       <Link
         href="#"
-        className="h-9 w-25 cursor-not-allowed rounded-2xl bg-red-700 px-4 py-2 text-sm font-semibold text-gray-50">
+        className="h-9 w-25 cursor-not-allowed rounded-2xl bg-green-300 px-4 py-2 text-sm font-semibold text-gray-50">
         앱 다운로드
       </Link>
 
