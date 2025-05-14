@@ -5,7 +5,7 @@ import { FeatureSection } from "@/components/sections/FeatureSection";
 import { NewsletterForm } from "@/components/sections/NewsletterForm";
 import { Footer } from "@/components/sections/Footer";
 import { FEATURE_SECTIONS } from "@/constants";
-import MiniLogo from "@/components/MiniLogo";
+import { ArrowButton } from "@/components/ArrowButton";
 
 export default function Home() {
   return (
@@ -21,7 +21,7 @@ export default function Home() {
             <span className="bg-[#31AF89] bg-clip-text text-transparent"> 공유 캘린더</span>
           </h1>
           <InfiniteSlider />
-          <MiniLogo scrollToId="newsletter-section" />
+          <ArrowButton scrollToId="newsletter-section" />
         </section>
 
         <section

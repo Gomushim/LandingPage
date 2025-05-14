@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 
-interface MiniLogoProps {
+interface ArrowButtonProps {
   scrollToId?: string; // 이동할 id
 }
 
-export default function MiniLogo({ scrollToId }: MiniLogoProps) {
+export const ArrowButton = ({ scrollToId }: ArrowButtonProps) => {
   const handleClick = () => {
     if (scrollToId) {
       const el = document.getElementById(scrollToId);
@@ -19,7 +19,7 @@ export default function MiniLogo({ scrollToId }: MiniLogoProps) {
   return (
     <Image
       src="/arrow.svg"
-      alt="miniLogo"
+      alt="arrow"
       width={100}
       height={35}
       className="my-8 h-15 w-8"
@@ -27,4 +27,4 @@ export default function MiniLogo({ scrollToId }: MiniLogoProps) {
       style={{ cursor: scrollToId ? "pointer" : undefined }}
     />
   );
-}
+};
