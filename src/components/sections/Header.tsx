@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const Header = () => (
   <header className="flex items-center justify-between px-7.5 py-5">
-    <Image src="/logo.svg" alt="로고" width={70} height={21} />
+    <Image src="/logo.svg" alt="로고" width={100} height={21} priority />
     <div className="flex items-center gap-2.5">
       <Link
         href="#"
