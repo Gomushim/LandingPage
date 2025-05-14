@@ -41,8 +41,8 @@ export default function Home() {
         </section>
 
         <section className="my-25 flex flex-col items-center gap-25">
-          {FEATURE_SECTIONS.map((feature, index) => (
-            <FeatureSection key={index} {...feature} />
+          {FEATURE_SECTIONS.map((feature, idx) => (
+            <FeatureSection key={idx} {...feature} isLast={idx === FEATURE_SECTIONS.length - 1} />
           ))}
         </section>
 
