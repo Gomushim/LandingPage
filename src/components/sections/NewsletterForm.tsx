@@ -17,10 +17,21 @@ export const NewsletterForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // 이메일 형식 검사 함수
+  const validateEmail = (email: string) => {
+    return /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !isChecked) return;
+
+    // 이메일 형식 검사
+    if (!validateEmail(email)) {
+      setError("올바른 이메일 형식을 입력해주세요.");
+      return;
+    }
 
     try {
       setIsLoading(true);
