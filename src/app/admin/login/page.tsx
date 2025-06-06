@@ -8,25 +8,34 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
     try {
       const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
+        callbackUrl: "/admin/dashboard",
       });
 
+      console.log("로그인 결과:", result);
+
       if (result?.error) {
-        setError("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
-      } else {
+        setError(`로그인 실패: ${result.error}`);
+      } else if (result?.ok) {
         router.push("/admin/dashboard");
       }
     } catch (error) {
-      console.error(error);
-      setError("로그인 중 오류가 발생했습니다.");
+      console.error("로그인 에러:", error);
+      setError("로그인 중 오류가 발생했습니다: " + (error as Error).message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,14 +79,25 @@ export default function AdminLoginPage() {
             </div>
           </div>
 
-          {error && <div className="text-center text-sm text-red-500">{error}</div>}
+          {error && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="text-sm text-red-700">{error}</div>
+            </div>
+          )}
 
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
-              로그인
+              disabled={isLoading}
+              className={`group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none ${
+                isLoading ? "cursor-not-allowed opacity-50" : ""
+              }`}>
+              {isLoading ? "로그인 중..." : "로그인"}
             </button>
+          </div>
+
+          <div className="mt-4 text-sm text-gray-600">
+            <p>현재 입력된 이메일: {email}</p>
           </div>
         </form>
       </div>

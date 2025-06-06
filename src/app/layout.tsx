@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import { GA_TRACKING_ID } from "@/lib/gtag";
+import { NextAuthProvider } from "@/components/NextAuthProvider";
 
 const pretendard = localFont({
   src: "../static/fonts/PretendardVariable.woff2",
@@ -57,7 +58,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="google-site-verification" content="FSXKlC8L2fC87G2HeDdxtnQyzDlOM4C3Y1eYoq3mzVA" />
         <meta name="naver-site-verification" content="159f6b48c5a57e08991c3f3d01c90a33db3ccba0" />
       </head>
-      <body className={`${pretendard.className}`}>{children}</body>
+      <body className={`${pretendard.className}`}>
+        <NextAuthProvider>{children}</NextAuthProvider>
+      </body>
     </html>
   );
 }
