@@ -95,10 +95,6 @@ export default function AdminLoginPage() {
               {isLoading ? "로그인 중..." : "로그인"}
             </button>
           </div>
-
-          <div className="mt-4 text-sm text-gray-600">
-            <p>현재 입력된 이메일: {email}</p>
-          </div>
         </form>
       </div>
     </div>
