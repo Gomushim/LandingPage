@@ -3,7 +3,7 @@ import Script from "next/script";
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import { GA_TRACKING_ID } from "@/lib/gtag";
-import { NextAuthProvider } from "@/components/NextAuthProvider";
+import { NextAuthProvider } from "@/contexts/NextAuthProvider";
 
 const pretendard = localFont({
   src: "../static/fonts/PretendardVariable.woff2",
@@ -12,7 +12,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "사랑꾼 - 곰신 커플을 위한 공유 캘린더",
+  title: "사랑꾼",
   description: "더 깊이 연결되는 감정, 곰신 커플을 위한 공유 캘린더",
   openGraph: {
     title: "사랑꾼 – 곰신 커플을 위한 감정 공유 캘린더",
