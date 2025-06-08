@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { DataTable } from "@/components/ui/dataTable";
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -35,7 +36,7 @@ export default function AdminDashboard() {
             <div className="overflow-hidden bg-white shadow sm:rounded-lg">
               <div className="px-4 py-5 sm:p-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">이메일 구독자 관리</h3>
-                {/* 여기에 이메일 구독자 목록과 관리 기능을 추가할 수 있습니다 */}
+                <DataTable />
               </div>
             </div>
           </div>
