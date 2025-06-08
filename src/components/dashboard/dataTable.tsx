@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
+import { use } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -25,51 +26,26 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { fetchEmailList } from "@/services/fetchEmail";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+type Subscriber = {
   email: string;
+  subscribedAt?: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+type SubscriberTableProps = {
+  subscribers: Subscriber[];
+  pagination: {
+    currentPage: number;
+    limit: number;
+    hasNextPage: boolean;
+    lastEvaluatedKey: string;
+  };
+};
+
+export const columns: ColumnDef<Subscriber>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -90,59 +66,51 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-  },
-  {
     accessorKey: "email",
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Email
-          <ArrowUpDown />
+          이메일
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "subscribedAt",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          구독 일자
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+      const subscribedAt = row.getValue("subscribedAt");
+      if (!subscribedAt) return "-";
+      return new Date(subscribedAt as string).toLocaleDateString("ko-KR");
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const subscriber = row.original;
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
+              <span className="sr-only">메뉴 열기</span>
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
+            <DropdownMenuLabel>작업</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(subscriber.email)}>
+              이메일 복사
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -150,14 +118,74 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function DataTable() {
+export function DataTable({ subscriptPromise }: { subscriptPromise: Promise<SubscriberTableProps> }) {
+  const data = use(subscriptPromise);
+  const { subscribers, pagination } = data;
+
+  // 테이블에 필요한 상태 관리
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  //페이지네이션에 필요한 상태
+  const [currentPage, setCurrentPage] = React.useState(pagination.currentPage);
+  const [hasNextPage, setHasNextPage] = React.useState(pagination.hasNextPage);
+  const [lastEvaluatedKey, setLastEvaluatedKey] = React.useState<string>(pagination.lastEvaluatedKey);
+  const [keyHistory, setKeyHistory] = React.useState<string[]>([]); // 이전 페이지 키 저장용
+
+  // 테이블 데이터 상태
+  const [tableData, setTableData] = React.useState(subscribers);
+  // 다음 페이지 핸들러
+  const handleNextPage = async () => {
+    try {
+      const data = await fetchEmailList({
+        limit: 10,
+        lastEvaluatedKey,
+      });
+
+      setTableData(data.subscribers);
+      setHasNextPage(data.pagination.hasNextPage);
+      setCurrentPage(prev => prev + 1);
+      setKeyHistory(prev => [...prev, lastEvaluatedKey]); // 현재 키를 히스토리에 저장
+      setLastEvaluatedKey(data.pagination.lastEvaluatedKey);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // 이전 페이지 핸들러
+  const handlePrevPage = async () => {
+    try {
+      if (currentPage === 2) {
+        // 첫 페이지로 돌아가는 경우
+        const data = await fetchEmailList({ limit: 10 });
+        setTableData(data.subscribers);
+        setHasNextPage(data.pagination.hasNextPage);
+        setCurrentPage(1);
+        setLastEvaluatedKey(data.pagination.lastEvaluatedKey);
+        setKeyHistory([]); // 히스토리 초기화
+      } else {
+        // 이전 페이지로 이동
+        const previousKey = keyHistory[keyHistory.length - 1];
+        const data = await fetchEmailList({
+          limit: 10,
+          lastEvaluatedKey: previousKey,
+        });
+
+        setTableData(data.subscribers);
+        setHasNextPage(true); // 이전으로 가는 경우 항상 다음 페이지 존재
+        setCurrentPage(prev => prev - 1);
+        setLastEvaluatedKey(data.pagination.lastEvaluatedKey);
+        setKeyHistory(prev => prev.slice(0, -1)); // 사용한 키는 히스토리에서 제거
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -179,7 +207,7 @@ export function DataTable() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="이메일로 검색..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={event => table.getColumn("email")?.setFilterValue(event.target.value)}
           className="max-w-sm"
@@ -187,7 +215,7 @@ export function DataTable() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
+              컬럼 <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -235,7 +263,7 @@ export function DataTable() {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  구독자가 없습니다.
                 </TableCell>
               </TableRow>
             )}
@@ -244,19 +272,14 @@ export function DataTable() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+          {table.getFilteredSelectedRowModel().rows.length}개 선택됨 (총 {table.getFilteredRowModel().rows.length}개)
         </div>
         <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
-            Previous
+          <Button variant="outline" size="sm" onClick={handlePrevPage} disabled={currentPage === 1}>
+            이전
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Next
+          <Button variant="outline" size="sm" onClick={handleNextPage} disabled={!hasNextPage}>
+            다음
           </Button>
         </div>
       </div>
