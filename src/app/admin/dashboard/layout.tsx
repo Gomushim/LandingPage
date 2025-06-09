@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import { Sidebar } from "@/shared/ui";
+import { Sidebar } from "@/widgets/ui";
 
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   return (
