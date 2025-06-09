@@ -14,7 +14,6 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
 import { use } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,9 +25,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { fetchEmailList } from "@/services/fetchEmail";
+import { fetchEmailList, deleteEmail } from "@/services/fetchEmail";
 
 type Subscriber = {
   email: string;
@@ -44,79 +44,6 @@ type SubscriberTableProps = {
     lastEvaluatedKey: string;
   };
 };
-
-export const columns: ColumnDef<Subscriber>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={value => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          이메일
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "subscribedAt",
-    header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          구독 일자
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const subscribedAt = row.getValue("subscribedAt");
-      if (!subscribedAt) return "-";
-      return new Date(subscribedAt as string).toLocaleDateString("ko-KR");
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const subscriber = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">메뉴 열기</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>작업</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(subscriber.email)}>
-              이메일 복사
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
 
 export function DataTable({ subscriptPromise }: { subscriptPromise: Promise<SubscriberTableProps> }) {
   const data = use(subscriptPromise);
@@ -136,6 +63,26 @@ export function DataTable({ subscriptPromise }: { subscriptPromise: Promise<Subs
 
   // 테이블 데이터 상태
   const [tableData, setTableData] = React.useState(subscribers);
+
+  // 구독자 삭제 핸들러
+  const handleDeleteSubscriber = async (email: string) => {
+    if (!confirm("정말로 이 구독자를 삭제하시겠습니까?")) return;
+
+    try {
+      await deleteEmail(email);
+      // 삭제 후 테이블 새로고침
+      const refreshedData = await fetchEmailList({ limit: 10 });
+      setTableData(refreshedData.subscribers);
+      setHasNextPage(refreshedData.pagination.hasNextPage);
+      setCurrentPage(1);
+      setLastEvaluatedKey(refreshedData.pagination.lastEvaluatedKey);
+      setKeyHistory([]);
+    } catch (error) {
+      console.error("구독자 삭제 실패:", error);
+      alert("구독자 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
   // 다음 페이지 핸들러
   const handleNextPage = async () => {
     try {
@@ -183,6 +130,85 @@ export function DataTable({ subscriptPromise }: { subscriptPromise: Promise<Subs
       console.error("Error:", error);
     }
   };
+
+  const columns: ColumnDef<Subscriber>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "email",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            이메일
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+    },
+    {
+      accessorKey: "subscribedAt",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            구독 일자
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const subscribedAt = row.getValue("subscribedAt");
+        if (!subscribedAt) return "-";
+        return new Date(subscribedAt as string).toLocaleDateString("ko-KR");
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const subscriber = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">메뉴 열기</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>작업</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(subscriber.email)}>
+                이메일 복사
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => handleDeleteSubscriber(subscriber.email)}
+                className="text-red-600 focus:text-red-600">
+                구독자 삭제
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data: tableData,

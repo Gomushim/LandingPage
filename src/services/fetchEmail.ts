@@ -55,3 +55,19 @@ export async function fetchEmailList({
 
   return res.json();
 }
+
+export async function deleteEmail(email: string) {
+  const API_URL = `${process.env.NEXT_PUBLIC_AWS_API}/email/${email}`;
+
+  const res = await fetch(API_URL, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(`구독자 삭제 실패: ${error}`);
+  }
+
+  return res.json();
+}
