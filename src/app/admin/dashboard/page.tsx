@@ -1,31 +1,16 @@
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
-// import { use, useEffect } from "react";
 import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { DataTable } from "@/components/dashboard/dataTable";
 import { fetchEmailList } from "@/services/fetchEmail";
+import { authOptions } from "@/lib/auth";
 
 export default async function AdminDashboard() {
-  // const { data: session, status } = useSession();
-  // const router = useRouter();
+  const session = await getServerSession(authOptions);
 
-  // useEffect(() => {
-  //   if (status === "unauthenticated") {
-  //     router.push("/admin/login");
-  //   }
-  // }, [status, router]);
-
-  // if (status === "loading") {
-  //   return (
-  //     <div className="flex min-h-screen items-center justify-center">
-  //       <div className="text-2xl">로딩 중...</div>
-  //     </div>
-  //   );
-  // }
-
-  // if (!session?.user) {
-  //   return null;
-  // }
+  if (!session?.user) {
+    redirect("/admin/login");
+  }
 
   const data = fetchEmailList({ page: 1, limit: 10 });
 
