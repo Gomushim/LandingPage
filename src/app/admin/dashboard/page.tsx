@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { DataTable } from "@/components/dashboard/dataTable";
 import { fetchEmailList } from "@/services/fetchEmail";
 import { authOptions } from "@/lib/auth";
+import TableSkeleton from "@/components/dashboard/TableSkeleton";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
@@ -23,7 +24,7 @@ export default async function AdminDashboard() {
             <div className="overflow-hidden bg-white shadow sm:rounded-lg">
               <div className="px-4 py-5 sm:p-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">이메일 구독자 관리</h3>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<TableSkeleton />}>
                   <DataTable subscriptPromise={data} />
                 </Suspense>
               </div>
