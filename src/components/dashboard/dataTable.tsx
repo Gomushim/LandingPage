@@ -104,27 +104,29 @@ export function DataTable({ subscriptPromise }: { subscriptPromise: Promise<Subs
   // 이전 페이지 핸들러
   const handlePrevPage = async () => {
     try {
+      if (currentPage <= 1) return; // 첫 페이지면 아무 동작도 하지 않음
+
       if (currentPage === 2) {
         // 첫 페이지로 돌아가는 경우
         const data = await fetchEmailList({ limit: 10 });
         setTableData(data.subscribers);
-        setHasNextPage(data.pagination.hasNextPage);
+        setHasNextPage(true);
         setCurrentPage(1);
         setLastEvaluatedKey(data.pagination.lastEvaluatedKey);
         setKeyHistory([]); // 히스토리 초기화
       } else {
         // 이전 페이지로 이동
-        const previousKey = keyHistory[keyHistory.length - 1];
+        const previousKey = keyHistory[keyHistory.length - 2]; // 이전 페이지의 키를 가져옴
         const data = await fetchEmailList({
           limit: 10,
           lastEvaluatedKey: previousKey,
         });
 
         setTableData(data.subscribers);
-        setHasNextPage(true); // 이전으로 가는 경우 항상 다음 페이지 존재
+        setHasNextPage(true);
         setCurrentPage(prev => prev - 1);
-        setLastEvaluatedKey(data.pagination.lastEvaluatedKey);
-        setKeyHistory(prev => prev.slice(0, -1)); // 사용한 키는 히스토리에서 제거
+        setLastEvaluatedKey(keyHistory[keyHistory.length - 1]); // 현재 페이지의 키로 설정
+        setKeyHistory(prev => prev.slice(0, -1)); // 마지막 키 제거
       }
     } catch (error) {
       console.error("Error:", error);
