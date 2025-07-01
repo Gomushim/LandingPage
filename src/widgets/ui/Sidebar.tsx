@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navigation = [
   { name: "대시보드", href: "/admin/dashboard" },
-  { name: "기본값", href: "" },
+  { name: "이메일 양식", href: "/admin/emailform" },
 ];
 
 export const Sidebar = () => {
